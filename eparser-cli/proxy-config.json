@@ -1,0 +1,12 @@
+{
+  "/api/*": {
+    "target": "http://127.0.0.1:8083/eparser",
+    "secure": false
+  },
+  "/token/*": {
+    "target": "http://127.0.0.1:8083/eparser",
+    "secure": false
+  }
+}
+
+
