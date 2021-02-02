@@ -1,0 +1,55 @@
+<div class="" id="page-wrapper">
+  <div class="container-fluid">
+      <div class="col-md-8 login-form">
+        <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <div>
+              <label class="control-label lime" for="companyNameId" >Компания</label>
+              <div>
+                <input id="companyNameId" class="form-control" formControlName="editName" type="text">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              <label class="control-label lime" for="urlId">URL</label>
+              <div >
+                <input id="urlId" class="form-control" formControlName="editUrl" type="url">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              <label class="control-label lime" for="thumbId">Миниатюра</label>
+              <div >
+                <input id="thumbId" class="form-control" formControlName="editThumb" type="url">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              <label class="control-label lime" for="countryId">Страна</label>
+              <div >
+                <input id="countryId" class="form-control" formControlName="editCountry" type="url">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div>
+              <label class="control-label lime" for="languageId">Язык страницы</label>
+              <div >
+                <input id="languageId" class="form-control" formControlName="editLanguage" type="url">
+              </div>
+            </div>
+          </div>
+          <div class="error-msg" *ngIf="companyError != null">
+            <span>{{companyError}}</span>
+          </div>
+          <button type="button" class="btn btn-success green-btn" (click)="onSubmit()">
+            Сохранить
+          </button>
+        </form>
+      </div>
+  </div>
+</div>
+

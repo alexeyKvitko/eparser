@@ -1,5 +1,4 @@
 
-
 body{
     font-size: 14px;
 }
@@ -106,7 +105,7 @@ tabset .nav-tabs .nav-link:focus,tabset .nav-tabs .nav-link:hover {
     border-color: #1f6b9e #1f6b9e #1f6b9e;
     background: #5d94b9;
 }
- 
+
 tabset .nav-tabs  .nav-link.active, tabset .nav-tabs .nav-link.active:focus tabset .nav-tabs .nav-item.show .nav-link{
     color: #ffffff;
     background-color: #fff;
@@ -285,10 +284,10 @@ pagination .page-link {
   border-left-color: #4285f4;
 }
 .alert-icon.alert-success > .icon {
-  background-color: #34a853;
+  background-color: #33ff00;
 }
 .alert-icon.alert-success > .icon:after {
-  border-left-color: #34a853;
+  border-left-color: #33ff00;
 }
 .alert-icon.alert-warning > .icon {
   background-color: #fbbc05;
@@ -306,7 +305,7 @@ pagination .page-link {
   border-color: #4285f4;
 }
 .alert-icon-border.alert-success .message {
-  border-color: #34a853;
+  border-color: #33ff00;
 }
 .alert-icon-border.alert-warning .message {
   border-color: #fbbc05;
@@ -343,7 +342,7 @@ pagination .page-link {
   color: #4285f4;
 }
 .alert-icon.alert-icon-colored.alert-success > .icon {
-  color: #34a853;
+  color: #33ff00;
 }
 .alert-icon.alert-icon-colored.alert-warning > .icon {
   color: #fbbc05;
@@ -361,7 +360,7 @@ pagination .page-link {
   color: #4285f4;
 }
 .alert-simple.alert-success > .icon {
-  color: #34a853;
+  color: #33ff00;
 }
 .alert-simple.alert-warning > .icon {
   color: #fbbc05;
@@ -402,7 +401,7 @@ pagination .page-link {
 }
 .alert-success {
   background-color: #67d283;
-  border-color: #34a853;
+  border-color: #33ff00;
 }
 .alert-success hr {
   border-top-color: #2e9549;

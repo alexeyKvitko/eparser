@@ -1,10 +1,6 @@
 //colors
-$accent-color:         #FF5722;
+$accent-color:         #ffb000;
 
-.full-scr{
-  width: 100%;
-  height: 100%;
-}
 
 .login-form{
   position: absolute;
@@ -36,6 +32,8 @@ $accent-color:         #FF5722;
   }
   .login-btn{
     margin-left: 12px;
+    background-color: #282828!important;
+    color: #00ff33 !important;
   }
 }
 

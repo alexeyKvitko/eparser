@@ -1,4 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: "Roboto Condenced";
+  src: url(assets/fonts/RobotoCondensed-Regular.ttf) format("truetype");
+}
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@font-face {
+  font-family: "Roboto Medium";
+  src: url(assets/fonts/Roboto-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: url(assets/fonts/Roboto-Bold.ttf) format("truetype");
+}
+
+@import 'scss/variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+//@import 'scss/custom';
+@import 'scss/responsive';
+
+
+
+
+

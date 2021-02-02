@@ -1,0 +1,13 @@
+<div class="sidebar hidden-sm-down">
+        <div class="av-page">
+          <small class="text-center lime">Доступные страницы</small>
+        </div>
+      <ul *ngFor="let company of companies">
+        <li class="url-li"><span class="lime">{{company.companyName}}</span> <i class="fa fa-pencil edit-btn" (click)="showCompanyDetails(company)" ></i> <br>
+          <small class="green3">{{company.url}}</small></li>
+  </ul>
+  <button type="button" class="btn btn-success add-company-btn" >
+    Добавить
+  </button>
+
+</div>

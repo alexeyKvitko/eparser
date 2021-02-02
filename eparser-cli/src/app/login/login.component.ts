@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   busy: boolean;
 
   constructor(private _globalService: GlobalService, private router: Router, private loginService: LoginService, private formBuilder: FormBuilder ) {
+    this.busy = false;
   }
 
   onSubmit() {
@@ -29,9 +30,9 @@ export class LoginComponent implements OnInit {
     };
     this.loginService.login(loginPayload).subscribe(data => {
       if (data.status === 200) {
-        this.busy = true;
+        this.busy = false;
         window.localStorage.setItem('token', data.result.token);
-        this.initBootstrapModel();
+        this.router.navigate(['main/dashboard']);
       } else {
         window.localStorage.removeItem('token');
         this.loginError = "Логин или Пароль не найден";
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   initBootstrapModel() {
+    this.busy = false;
     // this.bootstrapService.loadBootstrapModel().subscribe(data => {
     //   this.busy = false;
     //   if (data.status == 200) {
@@ -55,8 +57,8 @@ export class LoginComponent implements OnInit {
     this.busy = false;
     this.loginError = "";
     this.loginForm = this.formBuilder.group({
-      login: ['remd_admin', Validators.required],
-      password: ['remd_pswd', Validators.compose([Validators.required])]
+      login: ['e_admin', Validators.required],
+      password: ['e_pswd', Validators.compose([Validators.required])]
     });
     // this.onSubmit();
   }

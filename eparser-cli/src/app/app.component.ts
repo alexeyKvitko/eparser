@@ -19,8 +19,8 @@ export class AppComponent {
     });
   }
 
-  getTitle(state, parent) {
-    const data = [];
+  getTitle(state: any, parent: any) {
+    const data : any[] = [];
     if (parent && parent.snapshot.data && parent.snapshot.data.title) {
       data.push(parent.snapshot.data.title);
     }

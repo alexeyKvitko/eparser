@@ -1,0 +1,45 @@
+/********** 3. HEADER STYLES **********/
+/**************************************/
+
+.headerwrapper {
+  position: relative;
+  min-height: 60px;
+  width: 100%;
+  z-index: 1000;
+  &:after {
+    clear: both;
+    display: block;
+    content: '';
+  }
+  padding-left: 5px;
+}
+
+.header-title-div {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  .header-title {
+    font-family: "Roboto Bold";
+    color: #ffcc00;
+    font-size: 18px;
+    margin-left: 32px;
+  }
+
+  .header-subtitle {
+    font-family: "Roboto Medium";
+    color: #555555;
+    font-size: 16px;
+    margin-left: 48px;
+  }
+}
+
+
+.header-right {
+  float: right;
+}
+
+a.btn.btn-social-icon.btn-github {
+  color: #fff;
+  border: 1px solid #fff;
+  margin: 10px;
+}

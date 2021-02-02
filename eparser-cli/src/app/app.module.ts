@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import {AppRoutingModule, routes} from './app-routing.module';
 import { AppComponent } from './app.component';
+import {HeaderComponent} from "./shared/header/header.component";
+import {LeftNavTemplateComponent} from "./template/left-nav-template.component";
+import {NavigationComponent} from "./shared/navigation/navigation.component";
+import {BlankTemplateComponent} from "./template/blank-template.component";
 import {LoginService} from "./services/login.service";
 import {AuthService} from "./services/auth.service";
 import {TokenInterceptor} from "./services/token-interceptor.service";
@@ -10,17 +15,25 @@ import {GlobalService} from "./services/global.service";
 import { LoginComponent } from './login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from "@angular/router";
-import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {CompanyService} from "./services/company.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    LoadingComponent
+    LoadingComponent,
+    BlankTemplateComponent,
+    HeaderComponent,
+    LeftNavTemplateComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(routes, {useHash: true}),
     NgbModule
   ],
@@ -28,6 +41,7 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
     LoginService,
     AuthService,
     GlobalService,
+    CompanyService,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

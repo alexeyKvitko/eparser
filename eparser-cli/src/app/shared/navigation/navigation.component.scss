@@ -1,0 +1,38 @@
+.add-company-btn{
+  margin-left: 32px;
+  margin-top: 12px;
+  background-color: #282828!important;
+  color: #00ff33 !important;
+}
+
+.edit-btn{
+  font-size: 14px;
+  padding: 4px;
+  margin-left: 12px;
+  &:hover{
+    cursor: pointer;
+    color: #33ff33;
+  }
+}
+
+.av-page{
+  text-align: center;
+  margin-bottom: 12px;
+  small{
+    text-decoration: underline;
+    font-family: "Roboto Condenced";
+  }
+
+}
+.url-li{
+  color: #33ff00;
+  small{
+    font-family: "Roboto Condenced";
+    &:hover{
+      cursor: pointer;
+      color: #c78600;
+      text-decoration: underline;
+    }
+  }
+
+}
