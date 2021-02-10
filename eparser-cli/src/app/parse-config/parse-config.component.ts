@@ -1,0 +1,159 @@
+import {Component, OnInit} from '@angular/core';
+import {GlobalService} from "../services/global.service";
+import {PageTagModel} from "../model/page-tag.model";
+import {PageTagService} from "../services/page-tag.service";
+import {CompanyPageModel} from "../model/company-page.model";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {PairModel} from "../model/pair.model";
+import {Router} from "@angular/router";
+import {ParseService} from "../services/parse.service";
+import {TestResultModel} from "../model/test-result.model";
+import {ParseItemModel} from "../model/parse-item.model";
+
+@Component({
+  selector: 'app-parse-config',
+  templateUrl: './parse-config.component.html',
+  styleUrls: ['./parse-config.component.scss']
+})
+export class ParseConfigComponent implements OnInit {
+
+  directions: PairModel[] = [
+    {key: 'Вперед', value: 1},
+    {key: 'Точно', value: 0},
+    {key: 'Назад', value: -1},
+  ];
+
+  companyPage: CompanyPageModel;
+  pageTags: PageTagModel[] | null;
+  selPageTag: PageTagModel;
+  showPageTagForm: boolean;
+  showParseResult: boolean;
+  tagForm: FormGroup;
+  tagError: string;
+  isDeleteMsgShow: boolean;
+  selDirection: number;
+  testResult: TestResultModel;
+
+  constructor(private _globalService: GlobalService, private pageTagService: PageTagService, private formBuilder: FormBuilder,
+              private router: Router, private parseService: ParseService) {
+  }
+
+  ngOnInit(): void {
+    this.companyPage = this._globalService.getShareObject();
+    this.showPageTagForm = false;
+    this.showParseResult = false;
+    this.selDirection = 1;
+    this.isDeleteMsgShow = false;
+    this.loadPageTags();
+  }
+
+  addPageTag() {
+    let newPageTag = new PageTagModel();
+    newPageTag.pageId = this.companyPage.id;
+    newPageTag.reversed = 1;
+    newPageTag.entryNumber = 1;
+    this.showTagForm( newPageTag );
+  }
+
+  loadPageTags() {
+    this.pageTagService.getPageTags(this.companyPage.id).subscribe(data => {
+      if (data.status === 200) {
+        this.pageTags = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+
+  showTagForm(pageTag: PageTagModel): void {
+    this.selPageTag = pageTag;
+    console.log('Page tag', this.selPageTag );
+    this.tagForm = this.formBuilder.group({
+      id: pageTag.id,
+      fDescription: pageTag.tagName,
+      fStartTag: pageTag.startTag,
+      fEndtTag: pageTag.endTag,
+      fDirection: pageTag.reversed,
+      fEntryNum: pageTag.entryNumber,
+      fNeedTranslate: pageTag.needTranslate,
+      fIsImage: pageTag.isImage,
+      fMapTable: pageTag.mapTable,
+      fMapField: pageTag.mapField
+    });
+    this.showPageTagForm = true;
+  }
+
+  onSubmit() {
+    let changedTag = this.getChangedTag();
+    if ( changedTag != null ){
+      this.pageTagService.upsertTag( changedTag ).subscribe(data => {
+        if (data.status === 200) {
+          this.loadPageTags();
+          this.onCancel();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+  }
+
+  getChangedTag(): PageTagModel | null {
+    let submitTag = new PageTagModel();
+    submitTag.id = this.tagForm.get('id')?.value;
+    submitTag.pageId = this.selPageTag.pageId;
+    submitTag.tagName = this.tagForm.get('fDescription')?.value;
+    submitTag.startTag = this.tagForm.get('fStartTag')?.value;
+    submitTag.endTag = this.tagForm.get('fEndtTag')?.value;
+    submitTag.reversed = this.tagForm.get('fDirection')?.value;
+    submitTag.entryNumber = this.tagForm.get('fEntryNum')?.value;
+    submitTag.isImage = this.tagForm.get('fIsImage')?.value;
+    submitTag.needTranslate = this.tagForm.get('fNeedTranslate')?.value;
+    submitTag.mapTable = this.tagForm.get('fMapTable')?.value;
+    submitTag.mapField = this.tagForm.get('fMapField')?.value;
+    var notChanged =  submitTag.id == this.selPageTag.id
+                      && submitTag.tagName == this.selPageTag.tagName
+                      && submitTag.startTag == this.selPageTag.startTag
+                      && submitTag.endTag == this.selPageTag.endTag
+                      && submitTag.reversed == this.selPageTag.reversed
+                      && submitTag.entryNumber == this.selPageTag.entryNumber
+                      && submitTag.needTranslate == this.selPageTag.needTranslate
+                      && submitTag.isImage == this.selPageTag.isImage
+                      && submitTag.mapTable == this.selPageTag.mapTable
+                      && submitTag.mapField == this.selPageTag.mapField;
+    return notChanged ? null : submitTag;
+  }
+
+  onCancel() {
+    this.showPageTagForm = false;
+  }
+
+  onDelete() {
+    this.pageTagService.deleteTag( this.selPageTag.id ).subscribe(data => {
+      if (data.status === 200) {
+        this.loadPageTags();
+        this.onCancel();
+      } else {
+        alert(data.message+this.companyPage.pageName);
+      }
+    });
+  }
+
+  testParsing(){
+    this.parseService.testParsing(this.companyPage.id).subscribe(data => {
+      if (data.status === 200) {
+        this.testResult = data.result;
+        this.showParseResult = true;
+        console.log("Parsed:", data.result );
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+
+  goBack(){
+    this.router.navigate([ 'main/dashboard' ]);
+  }
+
+
+
+}

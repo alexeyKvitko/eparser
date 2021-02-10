@@ -22,11 +22,41 @@ body {
   background-color: #282828!important;
 }
 
+.row-header{
+  float: right;
+  padding: 8px;
+  margin-bottom: 4px;
+  button{
+    margin-right: 8px;
+  }
+}
+
 .lime{
+  font-family: "Roboto Condenced";
   color: #33ff00;
 }
+
+.orange{
+  font-family: "Roboto Condenced";
+  color: #ffbb00;
+}
+
+.orange-bacground{
+  font-family: "Roboto Condenced";
+  background-color: #ffbb00;
+  color: white;
+}
+
 .green3{
   color: #00ff66;
+}
+
+.gray-text{
+  color: #cecece;
+}
+
+.text-underline{
+  text-decoration: underline;
 }
 
 /*@import "assets/css/style.default.css";*/
@@ -66,7 +96,7 @@ body {
 #page-wrapper {
   position: inherit;
   margin: 0 0 0 340px;
-  max-height: 950px;
+  max-height: 850px;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -80,17 +110,29 @@ body {
 }
 
 .container-fluid {
-  padding-left: 25px;
+  padding-left: 0px;
   padding-right: 10px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
+
 }
 
 .green-btn{
   background-color: #282828!important;
   color: #00ff33 !important;
+}
+
+.white-btn{
+  background-color: #282828!important;
+  color: #fefefe !important;
+}
+
+.red-btn{
+  background-color: #282828!important;
+  color: #ffbb00 !important;
+  margin-left: 48px;
 }
 
 .white-box {

@@ -33,6 +33,20 @@ export const routes: Routes = [
         data: {
           title: 'Компания'
         }
+      },
+      {
+        path: 'companyPage',
+        loadChildren: () => import('./company-page/company-page.module').then(m => m.CompanyPageModule),
+        data: {
+          title: 'Страницы компании'
+        }
+      },
+      {
+        path: 'parseConfig',
+        loadChildren: () => import('./parse-config/parse-config.module').then(m => m.ParseConfigModule),
+        data: {
+          title: 'Настройка парсинга'
+        }
       }
     ]
   }

@@ -45,9 +45,26 @@
           <div class="error-msg" *ngIf="companyError != null">
             <span>{{companyError}}</span>
           </div>
-          <button type="button" class="btn btn-success green-btn" (click)="onSubmit()">
-            Сохранить
-          </button>
+          <div class="row" style="padding-left: 18px;" *ngIf="isDeleteMsgShow == false">
+            <button type="button" class="btn btn-success green-btn" (click)="onSubmit()">
+              Сохранить
+            </button> &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-light white-btn" (click)="onCancel()">
+              Отмена
+            </button>
+            <button type="button" class="btn btn-warning red-btn" (click)="isDeleteMsgShow = true">
+              Удалить
+            </button>
+          </div>
+          <div class="row-stat" *ngIf="isDeleteMsgShow == true">
+            <p class="lime">Удалить компанию {{company.companyName}} и всю информацию по ней ?</p>
+            <button type="button" class="btn btn-light white-btn" (click)="onDelete()">
+              Да
+            </button> &nbsp;&nbsp;&nbsp;
+            <button type="button" class="btn btn-success green-btn" (click)="isDeleteMsgShow = false">
+              Нет
+            </button> &nbsp;&nbsp;&nbsp;
+          </div>
         </form>
       </div>
   </div>

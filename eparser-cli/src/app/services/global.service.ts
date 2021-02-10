@@ -1,14 +1,18 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
+import {CompanyModel} from "../model/company.model";
 
 @Injectable()
 export class GlobalService {
 
-  public HEADER_TITLE: string = "header_title";
+  public LEFT_PANEL_SHOW: string = "left_panel_show";
+  public UPDATE_COMPANIES: string = "update_companies";
+  public UPDATE_COMPANY_PAGES: string = "update_company_pages";
+  public UPDATE_PAGES: string = "update_pages";
 
   private _currentRoute: string;
-
   private _shareObject: any;
+  private _selectedCompany: CompanyModel;
 
   constructor(  ) {}
 
@@ -39,6 +43,16 @@ export class GlobalService {
   public setShareObject(value: any) {
     this._shareObject = value;
   }
+
+
+  getSelectedCompany(): CompanyModel {
+    return this._selectedCompany;
+  }
+
+  setSelectedCompany(value: CompanyModel) {
+    this._selectedCompany = value;
+  }
+
 }
 
 export class DataSourceClass {

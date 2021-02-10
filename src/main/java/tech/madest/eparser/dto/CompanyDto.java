@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,5 +16,6 @@ public class CompanyDto implements Serializable {
     private String url;
     private String country;
     private String language;
+    private List<CompanyPageDto> companyPages;
 
 }

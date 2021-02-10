@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {CompanyService} from "./services/company.service";
+import {PageTagService} from "./services/page-tag.service";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {CompanyService} from "./services/company.service";
     AuthService,
     GlobalService,
     CompanyService,
+    PageTagService,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]

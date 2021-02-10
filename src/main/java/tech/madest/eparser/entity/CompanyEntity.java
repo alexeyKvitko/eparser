@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -29,5 +30,9 @@ public class CompanyEntity {
 
     @Column( name = "language" )
     private String language;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @JoinColumn(name = "company_id", referencedColumnName="id")
+    private List< CompanyPageEntity > companyPages;
 
 }

@@ -13,13 +13,7 @@ export class HeaderComponent implements OnInit {
   constructor(private _globalService: GlobalService) { }
 
   ngOnInit() {
-    this._globalService.data$.subscribe(data => {
-      if (data.ev === this._globalService.HEADER_TITLE ) {
-        this.headerTitle = data.value;
-      }
-    }, error => {
-      console.log('Error: ' + error);
-    });
+
   }
 
 }
