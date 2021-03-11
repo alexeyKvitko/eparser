@@ -10,7 +10,6 @@ import {BlankTemplateComponent} from "./template/blank-template.component";
 import {LoginService} from "./services/login.service";
 import {AuthService} from "./services/auth.service";
 import {TokenInterceptor} from "./services/token-interceptor.service";
-import {LoadingComponent} from "./shared/loading/loading.component";
 import {GlobalService} from "./services/global.service";
 import { LoginComponent } from './login/login.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +22,6 @@ import {PageTagService} from "./services/page-tag.service";
   declarations: [
     AppComponent,
     LoginComponent,
-    LoadingComponent,
     BlankTemplateComponent,
     HeaderComponent,
     LeftNavTemplateComponent,

@@ -1,7 +1,6 @@
 <div class="" id="page-wrapper">
   <div class="container-fluid">
     <div class="row row-stat dash-container" *ngIf="isEmptyScreen == true">
-      <span class="lime">ВЫБЕРИТЕ КОМПАНИЮ</span>
     </div>
 
     <div *ngIf="isEmptyScreen == false">
@@ -12,10 +11,8 @@
       </div>
       <div class="row row-stat ">
         <div class="dash-container">
-          <h3 class="lime">Страницы компании:{{company.companyName}} </h3>
           <div class="dash-item" *ngFor="let companyPage of company.companyPages" (click)="parseConfig( companyPage) ">
-            <div class="orange">{{companyPage.pageName}}<i class="fa fa-pencil dash-edit-btn"
-                                                           (click)="editPage( companyPage )"></i></div>
+            <div class="orange ">{{companyPage.pageName}}<i class="fa fa-pencil dash-edit-btn" (click)="editPage( companyPage )"></i></div>
             <div class="dash-url">{{companyPage.parseUrl}}</div>
             <small class="dash-desc">Последнее обновление: <b>{{companyPage.lastUpdate}}</b>,Статус:
               <b>{{companyPage.updateResult}}</b>

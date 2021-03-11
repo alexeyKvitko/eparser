@@ -3,12 +3,14 @@ package tech.madest.eparser.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tech.madest.eparser.AppConstants;
 import tech.madest.eparser.dto.CompanyPageDto;
 import tech.madest.eparser.dto.PageTagDto;
 import tech.madest.eparser.entity.CompanyPageEntity;
 import tech.madest.eparser.entity.PageTagEntity;
 import tech.madest.eparser.repository.PageTagRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,15 @@ public class PageTagServiceImpl {
 
     public void deletePageTag( Integer pageTagId ){
         pageTagRepo.deleteById( pageTagId );
+    }
+
+    public void addManufacturerTags(Integer pageId){
+        List< PageTagEntity> tagsToSave = new LinkedList<>();
+        for( PageTagDto tag : AppConstants.MANUFACTURER_TAG_NAMES ){
+            tag.setPageId( pageId );
+            tagsToSave.add( new ModelMapper().map( tag, PageTagEntity.class ) );
+        }
+        pageTagRepo.saveAll( tagsToSave );
     }
 
 }

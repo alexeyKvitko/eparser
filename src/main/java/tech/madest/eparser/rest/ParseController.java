@@ -23,11 +23,27 @@ public class ParseController {
     ParseServiceImpl parseService;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ApiResponse< List< TestResult > > getAllTags( @RequestParam( value = "pageId", required = true ) Integer pageId){
+    public ApiResponse< List< TestResult > > testResult( @RequestParam( value = "pageId", required = true ) Integer pageId){
         ApiResponse response = new ApiResponse();
         response.setStatus( HttpStatus.OK.value() );
         try {
-            response.setResult( parseService.testParsing( pageId ) );
+            response.setResult( parseService.testParsing( pageId, false ) );
+        } catch ( Exception e ){
+            response.setStatus( HttpStatus.BAD_REQUEST.value() );
+            String errMsg = "Can't parse page : "+e.getMessage();
+            response.setMessage( errMsg );
+            LOG.error( errMsg );
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/scheduler", method = RequestMethod.GET)
+    public ApiResponse< String > addToScheduler( @RequestParam( value = "pageId", required = true ) Integer pageId){
+        ApiResponse response = new ApiResponse();
+        response.setStatus( HttpStatus.OK.value() );
+        try {
+            response.setResult( parseService.setScheduller( pageId ) );
         } catch ( Exception e ){
             response.setStatus( HttpStatus.BAD_REQUEST.value() );
             String errMsg = "Can't parse page : "+e.getMessage();

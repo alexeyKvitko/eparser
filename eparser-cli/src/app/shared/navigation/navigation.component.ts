@@ -3,6 +3,7 @@ import {GlobalService} from "../../services/global.service";
 import {Router} from "@angular/router";
 import {CompanyModel} from "../../model/company.model";
 import {CompanyService} from "../../services/company.service";
+import {PageTypeConst} from "../../model/page-type.const";
 
 @Component({
   selector: 'app-navigation',
@@ -15,6 +16,7 @@ export class NavigationComponent implements OnInit {
    logSrc: string = "assets/images/icons/";
    companies : CompanyModel[];
    selectedCompany: CompanyModel|null;
+   navTitle: string|null;
 
   constructor(private _globalService: GlobalService, private router: Router, private companyService: CompanyService) {
   }
@@ -22,6 +24,7 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     this.showAvailSites = true;
     this.selectedCompany = null;
+    this.navTitle = null;
     this._globalService.data$.subscribe(data => {
       if ( this._globalService.LEFT_PANEL_SHOW === data.ev  ) {
         this.showAvailSites = data.value === 'true';
@@ -29,6 +32,9 @@ export class NavigationComponent implements OnInit {
       if ( this._globalService.UPDATE_COMPANIES === data.ev  &&
                                             data.value === 'true') {
         this.loadCompanies();
+      }
+      if ( this._globalService.UPDATE_NAV_TITLE === data.ev  ) {
+        this.navTitle = data.value
       }
     }, error => {
       console.log('Error: ' + error);
@@ -55,20 +61,19 @@ export class NavigationComponent implements OnInit {
     this.companyService.getCompanies().subscribe(data => {
       if (data.status === 200) {
         this.companies = data.result;
-        if ( this.selectedCompany != null ){
-          this.companies.forEach( company => { if ( company.id == this.selectedCompany?.id){ this.showCompanyPages( company ) ;}})
-        }
       } else {
         alert(data.message);
       }
     });
   }
 
-  showCompanyPages( company: CompanyModel): void{
-    this.selectedCompany = company;
-    this._globalService.setSelectedCompany( company );
+  showCompanyPages( ): void{
+    this.selectedCompany = this.companies[0];
+    this.navTitle = 'Производители';
+    this._globalService.setPageType( PageTypeConst.PAGE_MANUFACTURER );
+    this._globalService.setSelectedCompany( this.selectedCompany );
     this.showAvailSites = false;
-    this._globalService.dataBusChanged( this._globalService.UPDATE_PAGES, company);
+    this._globalService.dataBusChanged( this._globalService.UPDATE_PAGES, this.selectedCompany);
   }
 
   showAllCompanies(){

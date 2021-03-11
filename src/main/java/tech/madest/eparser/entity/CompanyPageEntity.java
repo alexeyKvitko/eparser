@@ -19,6 +19,9 @@ public class CompanyPageEntity {
     @Column( name = "page_name" )
     private String pageName;
 
+    @Column( name = "page_type" )
+    private String pageType;
+
     @Column( name = "company_id" )
     private Integer companyId;
 

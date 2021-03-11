@@ -8,10 +8,7 @@ import tech.madest.eparser.AppConstants;
 import tech.madest.eparser.entity.CompanyPageEntity;
 import tech.madest.eparser.entity.PageTagEntity;
 import tech.madest.eparser.exception.AppHttpException;
-import tech.madest.eparser.model.Block;
-import tech.madest.eparser.model.ParseItem;
-import tech.madest.eparser.model.SearchParam;
-import tech.madest.eparser.model.TestResult;
+import tech.madest.eparser.model.*;
 import tech.madest.eparser.repository.CompanyPageRepository;
 import tech.madest.eparser.repository.PageTagRepository;
 import tech.madest.eparser.utils.AppHttpUtils;
@@ -31,12 +28,18 @@ public class ParseServiceImpl {
     @Autowired
     CompanyPageRepository companyPageRepo;
 
-    public TestResult testParsing(Integer pageId){
+    @Autowired
+    ManufacturerServiceImpl manufacturerService;
+
+    public TestResult testParsing(Integer pageId, boolean addToScheduler){
         CompanyPageEntity  companyPage = companyPageRepo.findById( pageId ).get();
+        companyPage.setProcessed( addToScheduler ? AppConstants.INT_YES : AppConstants.INT_NO );
+        companyPageRepo.save( companyPage );
         List< PageTagEntity > tags = pageTagRepo.findAllByPageId( pageId );
         System.out.println(" START PARSE PAGE: "+companyPage.getPageName());
         TestResult testResult = new TestResult();
         testResult.setResult( AppConstants.SUCCESS );
+        testResult.setPageType( companyPage.getPageType() );
         String htmlResponse = null;
         try {
             htmlResponse = AppHttpUtils.getHtmlResponse( companyPage.getParseUrl(), companyPage.getTagLessInfo() );
@@ -94,7 +97,21 @@ public class ParseServiceImpl {
             }
         }
         testResult.setData( parsedData );
+        System.out.println(" END PARSE PAGE: "+companyPage.getPageName());
         return testResult;
+    }
+
+    public String setScheduller( Integer pageId ){
+       TestResult data = testParsing( pageId, true );
+       String result =  AppConstants.SUCCESS;
+       try {
+           if ( PageType.PAGE_MANUFACTURER.getValue().equals( data.getPageType() ) ){
+               manufacturerService.addManufacturers( data.getData() );
+           }
+       } catch ( Exception e ){
+           result = AppConstants.FAILURE;
+       }
+       return result;
     }
 
 }

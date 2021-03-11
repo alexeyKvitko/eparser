@@ -7,12 +7,13 @@ export class GlobalService {
 
   public LEFT_PANEL_SHOW: string = "left_panel_show";
   public UPDATE_COMPANIES: string = "update_companies";
-  public UPDATE_COMPANY_PAGES: string = "update_company_pages";
+  public UPDATE_NAV_TITLE: string = "update_nav_title";
   public UPDATE_PAGES: string = "update_pages";
 
   private _currentRoute: string;
   private _shareObject: any;
   private _selectedCompany: CompanyModel;
+  private _pageType: string;
 
   constructor(  ) {}
 
@@ -53,6 +54,14 @@ export class GlobalService {
     this._selectedCompany = value;
   }
 
+
+  getPageType(): string {
+    return this._pageType;
+  }
+
+  setPageType(value: string) {
+    this._pageType = value;
+  }
 }
 
 export class DataSourceClass {

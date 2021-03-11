@@ -12,6 +12,7 @@ public class CompanyPageDto {
 
     private Integer id;
     private String pageName;
+    private String pageType;
     private Integer companyId;
     private String parseUrl;
     private String pageAttr;
@@ -22,4 +23,5 @@ public class CompanyPageDto {
     private String description;
     private String tagLessInfo;
     private String tagSectionStart;
+
 }

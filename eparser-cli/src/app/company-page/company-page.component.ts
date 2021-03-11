@@ -74,6 +74,8 @@ export class CompanyPageComponent implements OnInit {
     editedPage.pageCount = this.pageForm.get('count')?.value;
     editedPage.tagLessInfo = this.pageForm.get('tagTrash')?.value;
     editedPage.tagSectionStart = this.pageForm.get('tagSecStart')?.value;
+    editedPage.pageType = this.companyPage.pageType;
+    editedPage.companyId= this.companyPage.companyId;
     var notChanged = this.companyPage.id == editedPage.id
       && this.companyPage.pageName == editedPage.pageName
       && this.companyPage.parseUrl == editedPage.parseUrl

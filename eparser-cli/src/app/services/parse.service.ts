@@ -11,6 +11,7 @@ import {PageTagModel} from "../model/page-tag.model";
 export class ParseService {
 
   private test = '/api/parse/test';
+  private scheduler = '/api/parse/scheduler';
 
 
   constructor(private http: HttpClient,private _globalService: GlobalService) {
@@ -18,6 +19,10 @@ export class ParseService {
 
   public testParsing( pageId: number) : Observable<ApiResponse> {
     return this.http.get<ApiResponse>( this.test+"?pageId="+pageId );
+  }
+
+  public addToScheduller( pageId: number) : Observable<ApiResponse> {
+    return this.http.get<ApiResponse>( this.scheduler+"?pageId="+pageId );
   }
 
 }

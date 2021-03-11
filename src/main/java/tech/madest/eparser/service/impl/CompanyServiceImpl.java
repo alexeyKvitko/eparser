@@ -8,6 +8,9 @@ import tech.madest.eparser.dto.CompanyDto;
 import tech.madest.eparser.dto.CompanyPageDto;
 import tech.madest.eparser.entity.CompanyEntity;
 import tech.madest.eparser.entity.CompanyPageEntity;
+import tech.madest.eparser.entity.shopizer.Category;
+import tech.madest.eparser.model.PageType;
+import tech.madest.eparser.repository.CategoryRepository;
 import tech.madest.eparser.repository.CompanyPageRepository;
 import tech.madest.eparser.repository.CompanyRepository;
 
@@ -24,8 +27,16 @@ public class CompanyServiceImpl {
     @Autowired
     CompanyPageRepository companyPageRepo;
 
+    @Autowired
+    PageTagServiceImpl pageTagService;
+
+    @Autowired
+    CategoryRepository categoryRepo;
+
     public List< CompanyDto > getAllCompanies() {
+        List< Category > categories = ( List< Category > ) categoryRepo.findAll();
         List< CompanyEntity > companyEntities = ( List< CompanyEntity > ) companyRepo.findAll();
+
         ModelMapper mapper = new ModelMapper();
         List< CompanyDto > companies = companyEntities.stream().map( entity -> mapper.map( entity, CompanyDto.class ) ).collect( Collectors.toList() );
         return companies;
@@ -54,6 +65,7 @@ public class CompanyServiceImpl {
     @Transactional
     public void upsertCompanyPage( CompanyPageDto companyPageDto){
         CompanyPageEntity companyPageEntity = null;
+        boolean isNewEntity = true;
         if ( companyPageDto.getId() != null ){
             companyPageEntity = companyPageRepo.findById( companyPageDto.getId() ).get();
             companyPageEntity.setPageName( companyPageDto.getPageName() );
@@ -62,10 +74,16 @@ public class CompanyServiceImpl {
             companyPageEntity.setPageCount( companyPageDto.getPageCount() );
             companyPageEntity.setTagLessInfo( companyPageDto.getTagLessInfo() );
             companyPageEntity.setTagSectionStart( companyPageDto.getTagSectionStart() );
+            isNewEntity = false;
         } else {
             companyPageEntity = new ModelMapper().map( companyPageDto, CompanyPageEntity.class );
         }
         companyPageRepo.save( companyPageEntity );
+        if ( isNewEntity ){
+            if ( PageType.PAGE_MANUFACTURER.getValue().equals( companyPageDto.getPageType() ) ){
+                pageTagService.addManufacturerTags( companyPageEntity.getId() );
+            }
+        }
     }
 
     @Modifying

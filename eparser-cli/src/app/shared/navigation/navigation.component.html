@@ -1,22 +1,30 @@
 <div class="sidebar hidden-sm-down">
   <div class="av-page text-center" *ngIf="showAvailSites == false">
-    <p class="text-center company-title">{{selectedCompany != null ? selectedCompany.companyName : ''}}</p>
+    <p class="text-center company-title">{{navTitle != null ? navTitle : ''}}</p>
     <button type="button" class="btn btn-link white-btn" (click)="showAllCompanies()">
-      <small>к списку компаний</small>
+      <small>вернуться</small>
     </button> &nbsp;&nbsp;&nbsp;
   </div>
   <div *ngIf="showAvailSites == true">
-    <ul *ngFor="let company of companies">
+    <ul>
       <li class="url-li">
-        <span class="lime">{{company.companyName}}</span>
-        <i class="fa fa-pencil edit-btn" (click)="showCompanyDetails(company)" ></i>
-        <br>
-        <small class="green3" (click)="showCompanyPages( company )">{{company.url}}</small>
+        <span class="lime" (click)="showCompanyPages()">Производители</span>
+      </li>
+      <li class="url-li">
+        <span class="lime">Категории</span>
       </li>
     </ul>
-    <button type="button" class="btn btn-success add-company-btn" (click)="addCompany()">
-      Добавить
-    </button>
+<!--    <ul *ngFor="let company of companies">-->
+<!--      <li class="url-li">-->
+<!--        <span class="lime">{{company.companyName}}</span>-->
+<!--        <i class="fa fa-pencil edit-btn" (click)="showCompanyDetails(company)" ></i>-->
+<!--        <br>-->
+<!--        <small class="green3" (click)="showCompanyPages( company )">{{company.url}}</small>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--    <button type="button" class="btn btn-success add-company-btn" (click)="addCompany()">-->
+<!--      Добавить-->
+<!--    </button>-->
   </div>
 
 

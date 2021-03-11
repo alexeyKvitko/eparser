@@ -1,6 +1,7 @@
 export class CompanyPageModel {
   id: number;
   pageName: string;
+  pageType: string;
   companyId: number;
   parseUrl: string;
   pageAttr: string;
@@ -11,4 +12,5 @@ export class CompanyPageModel {
   description: string;
   tagLessInfo: string;
   tagSectionStart: string;
+
 }

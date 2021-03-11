@@ -28,11 +28,13 @@ export class ParseConfigComponent implements OnInit {
   selPageTag: PageTagModel;
   showPageTagForm: boolean;
   showParseResult: boolean;
+  addEnabled: boolean;
   tagForm: FormGroup;
   tagError: string;
   isDeleteMsgShow: boolean;
   selDirection: number;
   testResult: TestResultModel;
+  busy: boolean;
 
   constructor(private _globalService: GlobalService, private pageTagService: PageTagService, private formBuilder: FormBuilder,
               private router: Router, private parseService: ParseService) {
@@ -40,10 +42,13 @@ export class ParseConfigComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyPage = this._globalService.getShareObject();
+    this._globalService.dataBusChanged( this._globalService.UPDATE_NAV_TITLE, "Настройка парсинга");
     this.showPageTagForm = false;
     this.showParseResult = false;
     this.selDirection = 1;
     this.isDeleteMsgShow = false;
+    this.busy = false;
+    this.addEnabled = false;
     this.loadPageTags();
   }
 
@@ -81,6 +86,7 @@ export class ParseConfigComponent implements OnInit {
       fMapField: pageTag.mapField
     });
     this.showPageTagForm = true;
+    this.tagForm.get('fDescription')?.disable();
   }
 
   onSubmit() {
@@ -139,14 +145,30 @@ export class ParseConfigComponent implements OnInit {
   }
 
   testParsing(){
+    this.busy = true;
     this.parseService.testParsing(this.companyPage.id).subscribe(data => {
       if (data.status === 200) {
         this.testResult = data.result;
         this.showParseResult = true;
-        console.log("Parsed:", data.result );
+        this.addEnabled = true;
       } else {
         alert(data.message);
       }
+      this.busy = false;
+    });
+  }
+
+  addToScheduller(){
+    this.busy = true;
+    this.parseService.addToScheduller(this.companyPage.id).subscribe(data => {
+      if (data.status === 200) {
+        this.testResult = data.result;
+        this.showParseResult = true;
+        this.addEnabled = false;
+      } else {
+        alert(data.message);
+      }
+      this.busy = false;
     });
   }
 

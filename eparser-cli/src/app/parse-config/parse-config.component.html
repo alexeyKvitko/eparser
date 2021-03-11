@@ -3,11 +3,11 @@
     <button type="button" class="btn btn-link white-btn" (click)="goBack()">
       <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;НАЗАД
     </button>
-    <p class="orange">Настройка параметров парсинга стриницы: <b class="lime">{{companyPage.pageName}}</b></p>
+    <p class="orange"><b class="lime">{{companyPage.pageName}}</b></p>
     <p class="green3 text-underline">{{companyPage.parseUrl}}</p>
-    <div class="row row-header">
-      <button type="button" class="btn btn-primary green-btn" (click)="addPageTag()">
-        Добавить тег
+    <div class="row row-header" >
+      <button type="button" class="btn btn-primary green-btn" *ngIf="addEnabled" (click)="addToScheduller()">
+        Добавить в расписание
       </button>
       <button type="button" class="btn btn-success green-btn" (click)="testParsing()">
         Тестировать парсинг
@@ -19,13 +19,12 @@
           <thead>
           <tr class="gray-text">
             <th style="width:5%">Номер</th>
-            <th style="width:15%">Описание</th>
-            <th style="width:22%">Открывающий тег</th>
-            <th style="width:22%">Закрывающий тег</th>
+            <th style="width:27%">Описание</th>
+            <th style="width:28%">Открывающий тег</th>
+            <th style="width:28%">Закрывающий тег</th>
             <th style="width:4%">Направление</th>
             <th style="width:8%">№ в поиске</th>
-            <th style="width:12%">Таблица</th>
-            <th style="width:12%">Поле</th>
+
           </tr>
           </thead>
         </table>
@@ -36,13 +35,13 @@
               <td style="width:5%">
                 <span>{{idx}}</span>
               </td>
-              <td style="width:15%" class="select-td">
+              <td style="width:27%" class="select-td">
                 <span>{{tag.tagName}}</span>
               </td>
-              <td style="width:22%" class="select-td">
+              <td style="width:28%" class="select-td">
                 <span>{{tag.startTag}}</span>
               </td>
-              <td style="width:22%" class="select-td">
+              <td style="width:28%" class="select-td">
                 <span>{{tag.endTag}}</span>
               </td>
               <td style="width:4%" class="select-td">
@@ -51,12 +50,7 @@
               <td style="width:8%" class="select-td">
                 <span>{{tag.entryNumber}}</span>
               </td>
-              <td style="width:12%" class="select-td">
-                <span>{{tag.mapTable}}</span>
-              </td>
-              <td style="width:12%" class="select-td">
-                <span>{{tag.mapField}}</span>
-              </td>
+
             </tr>
             </tbody>
           </table>
@@ -70,7 +64,7 @@
           <div>
             <label class="control-label lime" for="tagNameId">Описание тега</label>
             <div>
-              <input id="tagNameId" class="form-control" formControlName="fDescription" type="text">
+              <input id="tagNameId" class="form-control" formControlName="fDescription" type="text" >
             </div>
           </div>
         </div>
@@ -126,22 +120,22 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <div>
-            <label class="control-label lime" for="tableId">Таблица</label>
-            <div>
-              <input id="tableId" class="form-control" formControlName="fMapTable" type="text">
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <div>
-            <label class="control-label lime" for="fieldId">Поле таблицы</label>
-            <div>
-              <input id="fieldId" class="form-control" formControlName="fMapField" type="text">
-            </div>
-          </div>
-        </div>
+<!--        <div class="form-group">-->
+<!--          <div>-->
+<!--            <label class="control-label lime" for="tableId">Таблица</label>-->
+<!--            <div>-->
+<!--              <input id="tableId" class="form-control" formControlName="fMapTable" type="text">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <div>-->
+<!--            <label class="control-label lime" for="fieldId">Поле таблицы</label>-->
+<!--            <div>-->
+<!--              <input id="fieldId" class="form-control" formControlName="fMapField" type="text">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="error-msg" *ngIf="tagError != null">
           <span>{{tagError}}</span>
@@ -170,18 +164,24 @@
       </form>
     </div>
     <div id="testResultId" *ngIf="showParseResult == true">
+      <div id="sectionId" class="section_info" >
+        {{testResult.section}}
+      </div>
       <div style="border-bottom: 1px solid orange" *ngFor="let block of testResult.data">
         <p>{{block.blockId}}</p>
         <div  *ngFor="let item of block.parseItems">
-           <b class="orange">{{item.displayName}}</b>:
-           <small class="lime" *ngIf="item.image == false">{{item.parseValue}}</small>
+           <span class="lime">{{item.displayName}}</span>:
+           <small class="orange" *ngIf="item.image == false">{{item.parseValue}}</small>
            <div *ngIf="item.image == true">
-             <small class="lime" >{{item.parseValue}}</small><br>
+             <small class="orange" >{{item.parseValue}}</small><br>
              <img style="width: 128px;height: 128px" src="{{item.parseValue}}">
            </div>
-
         </div>
       </div>
     </div>
   </div>
+  <br/><br/><br/>
+</div>
+<div id="loading-div-id" class="loading-div" *ngIf="busy == true">
+  <img src="../../../assets/images/load.gif">
 </div>

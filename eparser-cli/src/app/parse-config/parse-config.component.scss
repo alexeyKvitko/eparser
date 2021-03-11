@@ -8,9 +8,16 @@
 .sel-row {
   &:hover {
     cursor: pointer;
-    background-color: #a1a111;
-    color: white;
+    background-color: #cecece;
+    color: black;
   }
+}
+.section_info{
+  border-top: 1px solid #cecece;
+  border-bottom: 1px solid #cecece;
+  font-family: "Roboto Condenced";
+  font-size: 10px;
+  color: #2a6496;
 }
 
 

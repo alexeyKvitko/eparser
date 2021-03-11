@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   addCompanyPage(){
     let companyPageModel = new CompanyPageModel();
     companyPageModel.companyId = this.company.id;
+    companyPageModel.pageType = this._globalService.getPageType();
     this.editPage( companyPageModel );
   }
 

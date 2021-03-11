@@ -1,13 +1,13 @@
 .add-company-btn{
   margin-left: 32px;
   margin-top: 12px;
-  background-color: #282828!important;
-  color: #00ff33 !important;
+  background-color: #fefece!important;
+  color: #555555 !important;
 }
 
 .company-title{
   font-size: 24px;
-  color: #ffcc00;
+  color: #222222;
   font-weight: bold;
 }
 
@@ -17,7 +17,7 @@
   margin-left: 12px;
   &:hover{
     cursor: pointer;
-    color: #33ff33;
+    color: #555555;
   }
 }
 
@@ -31,8 +31,8 @@
 
 }
 .url-li{
-  color: #33ff00;
-  small{
+  color: #555555;
+  span{
     font-family: "Roboto Condenced";
     &:hover{
       cursor: pointer;

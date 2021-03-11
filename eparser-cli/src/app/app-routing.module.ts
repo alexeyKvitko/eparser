@@ -38,7 +38,7 @@ export const routes: Routes = [
         path: 'companyPage',
         loadChildren: () => import('./company-page/company-page.module').then(m => m.CompanyPageModule),
         data: {
-          title: 'Страницы компании'
+          title: 'Производители'
         }
       },
       {
