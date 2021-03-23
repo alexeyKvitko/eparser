@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {GlobalService} from "../services/global.service";
 import {Router} from "@angular/router";
-import {CompanyModel} from "../model/company.model";
-import {CompanyPageModel} from "../model/company-page.model";
+import {ParsingPageModel} from "../model/parsing-page.model";
+import {PageTypeConst} from "../model/page-type.const";
+import {ParseService} from "../services/parse.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,27 +12,38 @@ import {CompanyPageModel} from "../model/company-page.model";
 })
 export class DashboardComponent implements OnInit {
 
-  company: CompanyModel;
+  parsingPages: ParsingPageModel[];
+  linkId: number;
+  pageTitle: string;
 
   isEmptyScreen : boolean;
 
-  constructor( private _globalService: GlobalService, private router: Router) {
+  constructor( private _globalService: GlobalService, private parseService: ParseService, private router: Router) {
 
   }
 
   ngOnInit() {
+    this.linkId = 1;
     if ( this._globalService.getSelectedCompany() == null ){
       this.isEmptyScreen = true;
     } else {
-      this.company = this._globalService.getSelectedCompany();
+      this.parsingPages = this._globalService.getSelectedCompany().companyPages;
       this.isEmptyScreen = false;
     }
     this._globalService.data$.subscribe(data => {
       if ( this._globalService.UPDATE_PAGES === data.ev  ) {
         if ( data.value != null ){
-          this.company = data.value;
+          if ( PageTypeConst.PAGE_MANUFACTURER ==  this._globalService.getPageType() ){
+            this.parsingPages = data.value.companyPages;
+            this.pageTitle="";
+          } else if (PageTypeConst.PAGE_CATEGORY ==  this._globalService.getPageType() ){
+             this.linkId = data.value.categoryId;
+             this.pageTitle = data.value.categoryName;
+             this.loadParsingPages();
+          }
           this.isEmptyScreen = false;
         } else {
+          alert("Set empty");
           this.isEmptyScreen = true;
         }
       }
@@ -40,22 +52,32 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  editPage( companyPage: CompanyPageModel ){
-    this._globalService.setShareObject( companyPage );
+  loadParsingPages(){
+    this.parseService.getCategoryPages( this.linkId ).subscribe( data =>{
+      if (data.status === 200) {
+        this.parsingPages = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+
+  editPage( parsingPage: ParsingPageModel ){
+    this._globalService.setShareObject( parsingPage );
     this._globalService.dataBusChanged( this._globalService.LEFT_PANEL_SHOW,'false' );
     let route = 'main/companyPage';
     this._globalService.setCurrentRoute( route );
     this.router.navigate([ route ]);
   }
 
-  addCompanyPage(){
-    let companyPageModel = new CompanyPageModel();
-    companyPageModel.companyId = this.company.id;
-    companyPageModel.pageType = this._globalService.getPageType();
-    this.editPage( companyPageModel );
+  addParsingPage(){
+    let parsingPageModel = new ParsingPageModel();
+    parsingPageModel.linkId = this.linkId;
+    parsingPageModel.pageType = this._globalService.getPageType();
+    this.editPage( parsingPageModel );
   }
 
-  parseConfig( companyPage: CompanyPageModel ): void{
+  parseConfig( companyPage: ParsingPageModel ): void{
     this._globalService.setShareObject( companyPage );
     this._globalService.dataBusChanged( this._globalService.LEFT_PANEL_SHOW,'false' );
     let route = 'main/parseConfig';

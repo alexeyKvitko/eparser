@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {GlobalService} from "../services/global.service";
 import {Router} from "@angular/router";
 import {LoginService} from "../services/login.service";
+import {CompanyService} from "../services/company.service";
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,8 @@ export class LoginComponent implements OnInit {
   loginError: string;
   busy: boolean;
 
-  constructor(private _globalService: GlobalService, private router: Router, private loginService: LoginService, private formBuilder: FormBuilder ) {
+  constructor(private _globalService: GlobalService, private router: Router, private loginService: LoginService,
+              private companyService : CompanyService, private formBuilder: FormBuilder ) {
     this.busy = false;
   }
 
@@ -32,7 +34,16 @@ export class LoginComponent implements OnInit {
       if (data.status === 200) {
         this.busy = false;
         window.localStorage.setItem('token', data.result.token);
-        this.router.navigate(['main/dashboard']);
+        this.companyService.getBootstrapModel().subscribe( data=>{
+          if ( data.status === 200 ){
+            this._globalService.setBootstrapModel(data.result);
+            console.log(data.result);
+            this.router.navigate(['main/dashboard']);
+          } else {
+            alert("No data. "+ data.message);
+          }
+        })
+
       } else {
         window.localStorage.removeItem('token');
         this.loginError = "Логин или Пароль не найден";

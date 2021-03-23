@@ -10,4 +10,5 @@ export class PageTagModel{
   entryNumber : number;
   isImage : number;
   needTranslate : number;
+  innerSearch: number;
 }

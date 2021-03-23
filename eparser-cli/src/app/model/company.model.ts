@@ -1,4 +1,4 @@
-import {CompanyPageModel} from "./company-page.model";
+import {ParsingPageModel} from "./parsing-page.model";
 
 export class CompanyModel {
   id: number;
@@ -7,5 +7,5 @@ export class CompanyModel {
   url: string;
   country :string;
   language :string;
-  companyPages: CompanyPageModel[];
+  companyPages: ParsingPageModel[];
 }

@@ -2,21 +2,29 @@
   <div class="container-fluid">
     <div class="row row-stat dash-container" *ngIf="isEmptyScreen == true">
     </div>
-
     <div *ngIf="isEmptyScreen == false">
       <div class="row row-header">
-        <button type="button" class="btn btn-primary green-btn" (click)="addCompanyPage()">
+        <button type="button" class="btn btn-primary green-btn" (click)="addParsingPage()">
           Добавить страницу
         </button>
       </div>
+      <p>
+        {{pageTitle}}
+      </p>
+      <div *ngIf="parsingPages == null || parsingPages.length==0">
+        Нет страниц для парсинга
+      </div>
       <div class="row row-stat ">
         <div class="dash-container">
-          <div class="dash-item" *ngFor="let companyPage of company.companyPages" (click)="parseConfig( companyPage) ">
-            <div class="orange ">{{companyPage.pageName}}<i class="fa fa-pencil dash-edit-btn" (click)="editPage( companyPage )"></i></div>
-            <div class="dash-url">{{companyPage.parseUrl}}</div>
-            <small class="dash-desc">Последнее обновление: <b>{{companyPage.lastUpdate}}</b>,Статус:
-              <b>{{companyPage.updateResult}}</b>
-              , Описание: <b>{{companyPage.description}}</b></small>
+          <div class="dash-item" *ngFor="let parsingPage of parsingPages">
+            <div (click)="parseConfig( parsingPage)">
+              <div class="orange ">{{parsingPage.pageName}}</div>
+              <div class="dash-url">{{parsingPage.parseUrl}}</div>
+              <small class="dash-desc">Последнее обновление: <b>{{parsingPage.lastUpdate}}</b>,Статус:
+                <b>{{parsingPage.updateResult}}</b>
+                , Описание: <b>{{parsingPage.description}}</b></small>
+            </div>
+            <button class="btn btn-outline-secondary dash-edit-btn" (click)="editPage( parsingPage )">Редактировать</button>
           </div>
         </div>
       </div>

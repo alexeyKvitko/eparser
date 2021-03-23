@@ -34,11 +34,38 @@
   color: #555555;
   span{
     font-family: "Roboto Condenced";
-    &:hover{
-      cursor: pointer;
-      color: #c78600;
-      text-decoration: underline;
-    }
+    color: black;
   }
-
 }
+.category{
+  list-style-type: none;
+  span{
+    color: #777777;
+    font-family: "Roboto Condenced";
+    font-size: 14px;
+  }
+}
+.plus-i{
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.depth-one{
+  margin-left: 8px;
+}
+.depth-two{
+  margin-left: 16px;
+}
+.depth-three{
+  margin-left: 24px;
+}
+.leaf{
+  color: #3F00FF!important;
+  font-weight: bold;
+  &:hover{
+    cursor: pointer;
+    color: #c78600;
+    text-decoration: underline;
+  }
+}
+

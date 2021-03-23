@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {GlobalService} from "../services/global.service";
 import {PageTagModel} from "../model/page-tag.model";
 import {PageTagService} from "../services/page-tag.service";
-import {CompanyPageModel} from "../model/company-page.model";
+import {ParsingPageModel} from "../model/parsing-page.model";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PairModel} from "../model/pair.model";
 import {Router} from "@angular/router";
 import {ParseService} from "../services/parse.service";
 import {TestResultModel} from "../model/test-result.model";
 import {ParseItemModel} from "../model/parse-item.model";
+import {BlockModel} from "../model/block.model";
 
 @Component({
   selector: 'app-parse-config',
@@ -23,8 +24,9 @@ export class ParseConfigComponent implements OnInit {
     {key: 'Назад', value: -1},
   ];
 
-  companyPage: CompanyPageModel;
+  companyPage: ParsingPageModel;
   pageTags: PageTagModel[] | null;
+  blocks: BlockModel[] | null;
   selPageTag: PageTagModel;
   showPageTagForm: boolean;
   showParseResult: boolean;
@@ -61,12 +63,16 @@ export class ParseConfigComponent implements OnInit {
   }
 
   loadPageTags() {
-    this.pageTagService.getPageTags(this.companyPage.id).subscribe(data => {
+    this.busy = true;
+    this.pageTagService.getPagedData(this.companyPage.id).subscribe(data => {
       if (data.status === 200) {
-        this.pageTags = data.result;
+        this.pageTags = data.result.pageTags;
+        console.log("updated tags:", this.pageTags);
+        this.blocks = data.result.blocks;
       } else {
         alert(data.message);
       }
+      this.busy = false;
     });
   }
 
@@ -82,8 +88,10 @@ export class ParseConfigComponent implements OnInit {
       fEntryNum: pageTag.entryNumber,
       fNeedTranslate: pageTag.needTranslate,
       fIsImage: pageTag.isImage,
+      fInnerSearch: pageTag.innerSearch,
       fMapTable: pageTag.mapTable,
       fMapField: pageTag.mapField
+
     });
     this.showPageTagForm = true;
     this.tagForm.get('fDescription')?.disable();
@@ -112,8 +120,9 @@ export class ParseConfigComponent implements OnInit {
     submitTag.endTag = this.tagForm.get('fEndtTag')?.value;
     submitTag.reversed = this.tagForm.get('fDirection')?.value;
     submitTag.entryNumber = this.tagForm.get('fEntryNum')?.value;
-    submitTag.isImage = this.tagForm.get('fIsImage')?.value;
-    submitTag.needTranslate = this.tagForm.get('fNeedTranslate')?.value;
+    submitTag.isImage = this.tagForm.get('fIsImage')?.value == true ? 1 : 0;
+    submitTag.needTranslate = this.tagForm.get('fNeedTranslate')?.value == true ? 1 : 0;
+    submitTag.innerSearch = this.tagForm.get('fInnerSearch')?.value == true ? 1 : 0;
     submitTag.mapTable = this.tagForm.get('fMapTable')?.value;
     submitTag.mapField = this.tagForm.get('fMapField')?.value;
     var notChanged =  submitTag.id == this.selPageTag.id
@@ -124,6 +133,7 @@ export class ParseConfigComponent implements OnInit {
                       && submitTag.entryNumber == this.selPageTag.entryNumber
                       && submitTag.needTranslate == this.selPageTag.needTranslate
                       && submitTag.isImage == this.selPageTag.isImage
+                      && submitTag.innerSearch == this.selPageTag.innerSearch
                       && submitTag.mapTable == this.selPageTag.mapTable
                       && submitTag.mapField == this.selPageTag.mapField;
     return notChanged ? null : submitTag;
@@ -149,6 +159,7 @@ export class ParseConfigComponent implements OnInit {
     this.parseService.testParsing(this.companyPage.id).subscribe(data => {
       if (data.status === 200) {
         this.testResult = data.result;
+        this.blocks = this.testResult.data;
         this.showParseResult = true;
         this.addEnabled = true;
       } else {
@@ -160,7 +171,7 @@ export class ParseConfigComponent implements OnInit {
 
   addToScheduller(){
     this.busy = true;
-    this.parseService.addToScheduller(this.companyPage.id).subscribe(data => {
+    this.parseService.addToScheduller(this.companyPage.id, this.companyPage.linkId).subscribe(data => {
       if (data.status === 200) {
         this.testResult = data.result;
         this.showParseResult = true;

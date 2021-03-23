@@ -8,24 +8,22 @@
   <div *ngIf="showAvailSites == true">
     <ul>
       <li class="url-li">
-        <span class="lime" (click)="showCompanyPages()">Производители</span>
+        <span class="lime" (click)="showManufacturerPages()">Производители</span>
       </li>
       <li class="url-li">
         <span class="lime">Категории</span>
+        <ul>
+          <li class="url-li category" *ngFor="let category of categories" (click)="onCategorySelect(category)" >
+            <span class="orange" [ngClass]="{'depth-one':category.depth == 1,
+                                              'depth-two':category.depth == 2,
+                                                'depth-three':category.depth == 3,
+                                                  'leaf':category.node == false }" >
+              <i class="fa fa-plus plus-i" *ngIf="category.node == true"></i>{{category.categoryName}}</span>
+          </li>
+        </ul>
       </li>
     </ul>
-<!--    <ul *ngFor="let company of companies">-->
-<!--      <li class="url-li">-->
-<!--        <span class="lime">{{company.companyName}}</span>-->
-<!--        <i class="fa fa-pencil edit-btn" (click)="showCompanyDetails(company)" ></i>-->
-<!--        <br>-->
-<!--        <small class="green3" (click)="showCompanyPages( company )">{{company.url}}</small>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--    <button type="button" class="btn btn-success add-company-btn" (click)="addCompany()">-->
-<!--      Добавить-->
-<!--    </button>-->
-  </div>
+ </div>
 
 
 </div>

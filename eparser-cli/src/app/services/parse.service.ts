@@ -12,6 +12,7 @@ export class ParseService {
 
   private test = '/api/parse/test';
   private scheduler = '/api/parse/scheduler';
+  private categoryPages = '/api/parse/getPagesByCategory';
 
 
   constructor(private http: HttpClient,private _globalService: GlobalService) {
@@ -21,8 +22,12 @@ export class ParseService {
     return this.http.get<ApiResponse>( this.test+"?pageId="+pageId );
   }
 
-  public addToScheduller( pageId: number) : Observable<ApiResponse> {
-    return this.http.get<ApiResponse>( this.scheduler+"?pageId="+pageId );
+  public addToScheduller( pageId: number, categoryId: number) : Observable<ApiResponse> {
+    return this.http.get<ApiResponse>( this.scheduler+"?pageId="+pageId+"&categoryId="+categoryId );
+  }
+
+  public getCategoryPages( categoryId: number) : Observable<ApiResponse> {
+    return this.http.get<ApiResponse>( this.categoryPages+"?categoryId="+categoryId );
   }
 
 }

@@ -1,0 +1,89 @@
+<div class="" id="page-wrapper">
+  <div class="container-fluid">
+    <div class="col-md-8">
+      <form [formGroup]="pageForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="pageNameId" >Описание страницы</label>
+            <div>
+              <input id="pageNameId" class="form-control" formControlName="pageName" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="urlId">URL</label>
+            <div >
+              <input id="urlId" class="form-control" formControlName="pageUrl" type="url">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="prefixId">Url сайта</label>
+            <div >
+              <input id="prefixId" class="form-control" formControlName="prefixUrl" type="url">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="attrId">Параметр признак страницы</label>
+            <div >
+              <input id="attrId" class="form-control" formControlName="attr" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="countId">Количество страниц</label>
+            <div >
+              <input id="countId" class="form-control" formControlName="count" type="number">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="trashId">HTML TAG: Начало блока</label>
+            <div >
+              <input id="trashId" class="form-control" formControlName="tagTrash" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="secStartId">HTML TAG: Начало секции</label>
+            <div >
+              <input id="secStartId" class="form-control" formControlName="tagSecStart" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="error-msg" *ngIf="pageError != null">
+          <span>{{pageError}}</span>
+        </div>
+        <div class="row" style="padding-left: 18px;" *ngIf="isDeleteMsgShow == false">
+          <button type="button" class="btn btn-success green-btn" (click)="onSubmit()">
+            Сохранить
+          </button> &nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-light white-btn" (click)="onCancel()">
+            Отмена
+          </button>
+          <button type="button" class="btn btn-warning red-btn" (click)="isDeleteMsgShow = true">
+            Удалить
+          </button>
+        </div>
+        <div class="row-stat" *ngIf="isDeleteMsgShow == true">
+          <p class="lime">Удалить страницу {{parsingPage.pageName}} и всю информацию по ней ?</p>
+          <button type="button" class="btn btn-light white-btn" (click)="onDelete()">
+            Да
+          </button> &nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-success green-btn" (click)="isDeleteMsgShow = false">
+            Нет
+          </button> &nbsp;&nbsp;&nbsp;
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+

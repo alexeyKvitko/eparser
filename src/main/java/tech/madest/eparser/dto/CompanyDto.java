@@ -16,6 +16,6 @@ public class CompanyDto implements Serializable {
     private String url;
     private String country;
     private String language;
-    private List<CompanyPageDto> companyPages;
+    private List< ParsingPageDto > companyPages;
 
 }

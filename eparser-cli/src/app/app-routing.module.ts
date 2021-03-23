@@ -36,7 +36,7 @@ export const routes: Routes = [
       },
       {
         path: 'companyPage',
-        loadChildren: () => import('./company-page/company-page.module').then(m => m.CompanyPageModule),
+        loadChildren: () => import('./parsing-page/parsing-page.module').then(m => m.ParsingPageModule),
         data: {
           title: 'Производители'
         }

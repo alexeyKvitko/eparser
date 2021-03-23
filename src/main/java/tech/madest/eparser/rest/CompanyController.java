@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tech.madest.eparser.dto.CompanyDto;
-import tech.madest.eparser.dto.CompanyPageDto;
+import tech.madest.eparser.dto.ParsingPageDto;
 import tech.madest.eparser.model.ApiResponse;
 import tech.madest.eparser.service.impl.CompanyServiceImpl;
+import tech.madest.eparser.service.impl.ParsingPageServiceImpl;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class CompanyController {
 
     @Autowired
     CompanyServiceImpl companyService;
+
+    @Autowired
+    ParsingPageServiceImpl parsingPageService;
 
     @RequestMapping(value = "/companies", method = RequestMethod.GET)
     public ApiResponse< List< CompanyDto > > getAllCompanies(){
@@ -73,14 +77,14 @@ public class CompanyController {
     }
 
     @RequestMapping(value = "/upsertPage", method = RequestMethod.POST)
-    public ApiResponse upsertCompanyPage( @RequestBody CompanyPageDto companyPageDto ){
+    public ApiResponse upsertCompanyPage( @RequestBody ParsingPageDto parsingPageDto ){
         ApiResponse response = new ApiResponse();
         response.setStatus( HttpStatus.OK.value() );
         try {
-            companyService.upsertCompanyPage( companyPageDto );
+            parsingPageService.upsertCompanyPage( parsingPageDto );
         } catch ( Exception e ){
             response.setStatus( HttpStatus.BAD_REQUEST.value() );
-            String errMsg = "Can't upsert company: "+ companyPageDto.getPageName();
+            String errMsg = "Can't upsert company: "+ parsingPageDto.getPageName();
             response.setMessage( errMsg );
             LOG.error( errMsg );
             e.printStackTrace();
@@ -94,7 +98,7 @@ public class CompanyController {
         ApiResponse response = new ApiResponse();
         response.setStatus( HttpStatus.OK.value() );
         try {
-            companyService.deleteCompanyPage( companyPageId );
+            parsingPageService.deleteCompanyPage( companyPageId );
         } catch ( Exception e ){
             response.setStatus( HttpStatus.BAD_REQUEST.value() );
             String errMsg = "Can't delete company: ";

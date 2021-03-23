@@ -108,16 +108,20 @@
           <div>
             <label class="control-label lime" for="translateId">Переводить поле</label>
             <div>
-              <input id="translateId" class="form-control" formControlName="fNeedTranslate" type="number">
+              <input id="translateId" class="checkbox" formControlName="fNeedTranslate" type="checkbox">
             </div>
           </div>
         </div>
         <div class="form-group">
           <div>
             <label class="control-label lime" for="imageId">Признак изображения</label>
-            <div>
-              <input id="imageId" class="form-control" formControlName="fIsImage" type="number">
-            </div>
+            <input id="imageId" class="checkbox" formControlName="fIsImage" type="checkbox">
+          </div>
+        </div>
+        <div class="form-group">
+          <div>
+            <label class="control-label lime" for="innerId">Искать во внутреннем html</label>
+            <input id="innerId" class="checkbox" formControlName="fInnerSearch" type="checkbox">
           </div>
         </div>
 <!--        <div class="form-group">-->
@@ -163,11 +167,11 @@
         </div>
       </form>
     </div>
-    <div id="testResultId" *ngIf="showParseResult == true">
-      <div id="sectionId" class="section_info" >
-        {{testResult.section}}
-      </div>
-      <div style="border-bottom: 1px solid orange" *ngFor="let block of testResult.data">
+    <div id="sectionId" class="section_info" *ngIf="showParseResult == true">
+      {{testResult.section}}
+    </div>
+    <div id="testResultId" *ngIf="blocks != null && blocks.length > 0">
+      <div style="border-bottom: 1px solid orange" *ngFor="let block of blocks">
         <p>{{block.blockId}}</p>
         <div  *ngFor="let item of block.parseItems">
            <span class="lime">{{item.displayName}}</span>:

@@ -46,4 +46,7 @@ public class PageTagEntity {
     @Column( name = "need_translate" )
     private Integer needTranslate;
 
+    @Column( name = "inner_search" )
+    private Integer innerSearch;
+
 }

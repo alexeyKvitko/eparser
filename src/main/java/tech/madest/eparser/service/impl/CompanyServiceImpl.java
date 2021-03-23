@@ -5,16 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import tech.madest.eparser.dto.CompanyDto;
-import tech.madest.eparser.dto.CompanyPageDto;
+import tech.madest.eparser.dto.ParsingPageDto;
 import tech.madest.eparser.entity.CompanyEntity;
-import tech.madest.eparser.entity.CompanyPageEntity;
-import tech.madest.eparser.entity.shopizer.Category;
+import tech.madest.eparser.entity.ParsingPageEntity;
+import tech.madest.eparser.manager.GlobalManager;
 import tech.madest.eparser.model.PageType;
 import tech.madest.eparser.repository.CategoryRepository;
-import tech.madest.eparser.repository.CompanyPageRepository;
+import tech.madest.eparser.repository.ParsingPageRepository;
 import tech.madest.eparser.repository.CompanyRepository;
 
 import javax.transaction.Transactional;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class CompanyServiceImpl {
     CompanyRepository companyRepo;
 
     @Autowired
-    CompanyPageRepository companyPageRepo;
+    ParsingPageServiceImpl parsingPageService;
 
     @Autowired
     PageTagServiceImpl pageTagService;
@@ -34,11 +35,12 @@ public class CompanyServiceImpl {
     CategoryRepository categoryRepo;
 
     public List< CompanyDto > getAllCompanies() {
-        List< Category > categories = ( List< Category > ) categoryRepo.findAll();
-        List< CompanyEntity > companyEntities = ( List< CompanyEntity > ) companyRepo.findAll();
-
+        CompanyEntity companyEntity =  companyRepo.findById( GlobalManager.COMPANY_ID ).get();
         ModelMapper mapper = new ModelMapper();
-        List< CompanyDto > companies = companyEntities.stream().map( entity -> mapper.map( entity, CompanyDto.class ) ).collect( Collectors.toList() );
+        CompanyDto  company =  mapper.map( companyEntity, CompanyDto.class );
+        company.setCompanyPages( parsingPageService.getParsingPagesByLinkIdAndPageType( GlobalManager.COMPANY_ID, PageType.PAGE_MANUFACTURER ) );
+        List<CompanyDto> companies = new LinkedList<>();
+        companies.add( company );
         return companies;
     }
 
@@ -61,35 +63,6 @@ public class CompanyServiceImpl {
         companyRepo.deleteById( companyId );
     }
 
-    @Modifying
-    @Transactional
-    public void upsertCompanyPage( CompanyPageDto companyPageDto){
-        CompanyPageEntity companyPageEntity = null;
-        boolean isNewEntity = true;
-        if ( companyPageDto.getId() != null ){
-            companyPageEntity = companyPageRepo.findById( companyPageDto.getId() ).get();
-            companyPageEntity.setPageName( companyPageDto.getPageName() );
-            companyPageEntity.setParseUrl( companyPageDto.getParseUrl() );
-            companyPageEntity.setPageAttr( companyPageDto.getPageAttr() );
-            companyPageEntity.setPageCount( companyPageDto.getPageCount() );
-            companyPageEntity.setTagLessInfo( companyPageDto.getTagLessInfo() );
-            companyPageEntity.setTagSectionStart( companyPageDto.getTagSectionStart() );
-            isNewEntity = false;
-        } else {
-            companyPageEntity = new ModelMapper().map( companyPageDto, CompanyPageEntity.class );
-        }
-        companyPageRepo.save( companyPageEntity );
-        if ( isNewEntity ){
-            if ( PageType.PAGE_MANUFACTURER.getValue().equals( companyPageDto.getPageType() ) ){
-                pageTagService.addManufacturerTags( companyPageEntity.getId() );
-            }
-        }
-    }
 
-    @Modifying
-    @Transactional
-    public void deleteCompanyPage( Integer companyPageId ){
-        companyPageRepo.deleteById( companyPageId );
-    }
 
 }

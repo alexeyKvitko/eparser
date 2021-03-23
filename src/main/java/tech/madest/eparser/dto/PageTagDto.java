@@ -25,6 +25,7 @@ public class PageTagDto {
     private Integer entryNumber;
     private Integer isImage;
     private Integer needTranslate;
+    private Integer innerSearch;
 
     public PageTagDto( String tagName, Integer isImage, String mapTable, String mapField ) {
         this.tagName = tagName;

@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Subject} from "rxjs";
 import {CompanyModel} from "../model/company.model";
+import {EPBootstrapModel} from "../model/epbootstrap.model";
 
 @Injectable()
 export class GlobalService {
@@ -14,6 +15,7 @@ export class GlobalService {
   private _shareObject: any;
   private _selectedCompany: CompanyModel;
   private _pageType: string;
+  private _bootstrapModel: EPBootstrapModel;
 
   constructor(  ) {}
 
@@ -61,6 +63,15 @@ export class GlobalService {
 
   setPageType(value: string) {
     this._pageType = value;
+  }
+
+
+  getBootstrapModel(): EPBootstrapModel {
+    return this._bootstrapModel;
+  }
+
+  setBootstrapModel(value: EPBootstrapModel) {
+    this._bootstrapModel = value;
   }
 }
 

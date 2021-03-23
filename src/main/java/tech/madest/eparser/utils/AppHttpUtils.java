@@ -12,10 +12,15 @@ import java.net.URL;
 
 public abstract class AppHttpUtils {
 
+    public static synchronized String getHtmlResponse( String url ) throws AppHttpException {
+        return getHtmlResponse( url, null );
+    }
+
     public static synchronized String getHtmlResponse( String url, String trashTag ) throws AppHttpException {
         String htmlResponse = null;
+        HttpTransport httpTransport = null;
         try {
-            HttpTransport httpTransport = new NetHttpTransport();
+            httpTransport = new NetHttpTransport();
             HttpRequestFactory requestFactory = httpTransport.createRequestFactory();
             HttpRequest request = null;
             try {
@@ -29,14 +34,25 @@ public abstract class AppHttpUtils {
             }
             htmlResponse = htmlResponse.replace( "\n", "" ).replace( "\r", "" ).replace( "\t", "" );
             // Убираем заголовок
-            int trashIdx = htmlResponse.indexOf( trashTag ) + trashTag.length();
-            htmlResponse = htmlResponse.substring( trashIdx );
+            if ( trashTag != null ){
+                int trashIdx = htmlResponse.indexOf( trashTag ) + trashTag.length();
+                htmlResponse = htmlResponse.substring( trashIdx );
+            }
             // Убираем комментарии
             htmlResponse = ParseUtils.polish( htmlResponse );
         } catch ( Exception e ) {
             e.printStackTrace();
             throw new AppHttpException( "Can't parse url: " + url + ", reason: " + e.getMessage() );
+        } finally {
+            if ( httpTransport != null ){
+                try {
+                    httpTransport.shutdown();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
         }
+
         return htmlResponse;
     }
 

@@ -4,7 +4,7 @@ import {GlobalService} from "./global.service";
 import {Observable} from "rxjs";
 import {ApiResponse} from "../model/api.response";
 import {CompanyModel} from "../model/company.model";
-import {CompanyPageModel} from "../model/company-page.model";
+import {ParsingPageModel} from "../model/parsing-page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,7 @@ import {CompanyPageModel} from "../model/company-page.model";
 export class CompanyService {
 
   private fetchCompanies = '/api/company/companies';
+  private fetchBootstrap = '/bootstrap/initialize';
   private upsert = '/api/company/upsert';
   private delete = '/api/company/delete/';
   private upsertPage = '/api/company/upsertPage';
@@ -24,6 +25,10 @@ export class CompanyService {
     return this.http.get<ApiResponse>( this.fetchCompanies );
   }
 
+  public getBootstrapModel() : Observable<ApiResponse> {
+    return this.http.get<ApiResponse>( this.fetchBootstrap );
+  }
+
   public upsertCompany( companyModel : CompanyModel): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(this.upsert, companyModel);
   }
@@ -32,7 +37,7 @@ export class CompanyService {
     return this.http.post<ApiResponse>(this.delete, companyId);
   }
 
-  public upsertCompanyPage( companyPageModel : CompanyPageModel): Observable<ApiResponse> {
+  public upsertCompanyPage( companyPageModel : ParsingPageModel): Observable<ApiResponse> {
     return this.http.post<ApiResponse>(this.upsertPage, companyPageModel);
   }
 
