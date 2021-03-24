@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import tech.madest.eparser.AppConstants;
 import tech.madest.eparser.dto.PageTagDto;
 import tech.madest.eparser.entity.PageTagEntity;
+import tech.madest.eparser.entity.shopizer.product.Product;
+import tech.madest.eparser.entity.shopizer.product.description.ProductDescription;
+import tech.madest.eparser.entity.shopizer.product.image.ProductImage;
 import tech.madest.eparser.entity.shopizer.product.manufacturer.Manufacturer;
 import tech.madest.eparser.entity.shopizer.product.manufacturer.ManufacturerDescription;
 import tech.madest.eparser.model.Block;
@@ -13,6 +16,7 @@ import tech.madest.eparser.model.PageData;
 import tech.madest.eparser.model.PageType;
 import tech.madest.eparser.model.ParseItem;
 import tech.madest.eparser.repository.PageManufacturerRepository;
+import tech.madest.eparser.repository.PageProductRepository;
 import tech.madest.eparser.repository.PageTagRepository;
 
 import java.util.LinkedList;
@@ -28,13 +32,16 @@ public class PageTagServiceImpl {
     @Autowired
     PageManufacturerRepository cpmRepo;
 
-    public PageData getAllTagByPage( Integer pageId ) {
+    @Autowired
+    PageProductRepository pageProductRepository;
+
+    public PageData getManufacturerPageData( Integer pageId ) {
         PageData pageData = new PageData();
         List< PageTagEntity > pageTagEntities = pageTagRepo.findAllByPageId( pageId.intValue() );
         ModelMapper mapper = new ModelMapper();
         pageData.setPageTags( pageTagEntities.stream().map( entity -> mapper.map( entity, PageTagDto.class ) ).collect( Collectors.toList() ) );
         List< Block > blocks = new LinkedList<>();
-        List< Manufacturer > manufacturers = cpmRepo.getAllByPageId( Long.valueOf( pageId ) );
+        List< Manufacturer > manufacturers = cpmRepo.getAllManufacturersByPageId( Long.valueOf( pageId ) );
         for ( Manufacturer manufacturer : manufacturers ) {
             Block block = new Block();
             block.setBlockId( manufacturer.getId().intValue() );
@@ -43,6 +50,28 @@ public class PageTagServiceImpl {
             items.add( new ParseItem( AppConstants.MANUFACTURED_NAME, manufacturerDescription.getName(), false ) );
             items.add( new ParseItem( AppConstants.MANUFACTURED_DESC, manufacturerDescription.getDescription(), false ) );
             items.add( new ParseItem( AppConstants.MANUFACTURED_LOGO, manufacturer.getImage(), true ) );
+            block.setParseItems( items );
+            blocks.add( block );
+        }
+        pageData.setBlocks( blocks );
+        return pageData;
+    }
+
+    public PageData getCategoryPageData( Integer pageId ) {
+        PageData pageData = new PageData();
+        List< PageTagEntity > pageTagEntities = pageTagRepo.findAllByPageId( pageId.intValue() );
+        ModelMapper mapper = new ModelMapper();
+        pageData.setPageTags( pageTagEntities.stream().map( entity -> mapper.map( entity, PageTagDto.class ) ).collect( Collectors.toList() ) );
+        List< Block > blocks = new LinkedList<>();
+        List< Product > products = pageProductRepository.getAllProductsByPageId( Long.valueOf( pageId ) );
+        for ( Product product : products ) {
+            Block block = new Block();
+            block.setBlockId( product.getId().intValue() );
+            List< ParseItem > items = new LinkedList<>();
+            ProductDescription productDescription = product.getDescriptions().iterator().next();
+            items.add( new ParseItem( AppConstants.PRODUCT_NAME, productDescription.getName(), false ) );
+            items.add( new ParseItem( AppConstants.PRODUCT_DESCRIPTION, productDescription.getDescription(), false ) );
+            items.add( new ParseItem( AppConstants.PRODUCT_IMAGE, product.getProductImage().getProductImageUrl( ), true ) );
             block.setParseItems( items );
             blocks.add( block );
         }

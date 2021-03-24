@@ -64,10 +64,9 @@ export class ParseConfigComponent implements OnInit {
 
   loadPageTags() {
     this.busy = true;
-    this.pageTagService.getPagedData(this.companyPage.id).subscribe(data => {
+    this.pageTagService.getPagedData(this.companyPage.id, this.companyPage.pageType ).subscribe(data => {
       if (data.status === 200) {
         this.pageTags = data.result.pageTags;
-        console.log("updated tags:", this.pageTags);
         this.blocks = data.result.blocks;
       } else {
         alert(data.message);

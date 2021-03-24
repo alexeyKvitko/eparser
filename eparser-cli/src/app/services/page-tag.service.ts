@@ -11,15 +11,15 @@ import {PageTagModel} from "../model/page-tag.model";
 })
 export class PageTagService {
 
-  private fetchTags = '/api/page/pageData';
+  private pageData = '/api/page/pageData';
   private upsert = '/api/page/upsertTag';
   private delete = '/api/page/deleteTag';
 
   constructor(private http: HttpClient,private _globalService: GlobalService) {
   }
 
-  public getPagedData( pageId: number) : Observable<ApiResponse> {
-    return this.http.get<ApiResponse>( this.fetchTags+"?pageId="+pageId );
+  public getPagedData( pageId: number, pageType: string) : Observable<ApiResponse> {
+    return this.http.get<ApiResponse>( this.pageData+"?pageId="+pageId+"&pageType="+pageType );
   }
 
   public upsertTag( pageTagModel : PageTagModel): Observable<ApiResponse> {

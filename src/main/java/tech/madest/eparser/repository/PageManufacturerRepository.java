@@ -12,5 +12,5 @@ public interface PageManufacturerRepository extends CrudRepository< PageManufact
 
     @Query( value = "select m from Manufacturer m where m.id in " +
                 "( select cp.manufacturerId from PageManufacturerEntity cp where cp.pageId = :pageId)"  )
-    List< Manufacturer > getAllByPageId(@Param("pageId") Long pageId);
+    List< Manufacturer > getAllManufacturersByPageId( @Param("pageId") Long pageId);
 }

@@ -30,7 +30,7 @@ public class BootstrapController {
             response.setResult( bootstrapService.getBootstrapModel() );
         } catch ( Exception e ){
             response.setStatus( HttpStatus.BAD_REQUEST.value() );
-            response.setMessage( "Can't get companies ..." );
+            response.setMessage( "Can't get bootstarp data ..." );
             LOG.error( "Can't get companies: "+e.getMessage() );
             e.printStackTrace();
         }
